@@ -188,7 +188,7 @@ addEventListener('contextmenu', e => {
     // Calc menu position
 
     // set menu position
-    const mdm = [menu.clientWidth,menu.clientHeight], wdm = [window.innerWidth,window.innerHeight], mp = [e.clientX,e.clientY], pos = [];
+    const mdm = [menu.clientWidth,menu.clientHeight], wdm = [document.documentElement.clientWidth,document.documentElement.clientHeight], mp = [e.clientX,e.clientY], pos = [];
     for (var i = 0; i < 2; i++){
         // calc
         pos.push(mp[i] + mdm[i] > wdm[i] ? mp[i] - mdm[i] : mp[i]); // set menu position, standard context menu
