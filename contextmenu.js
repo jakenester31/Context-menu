@@ -9,7 +9,7 @@ const openChildren = [];
 var t = 0
 //Create menus
 cmt('default menu');
-menuStart('');
+menuStart('all');
 addButton('Delete','console.log("test")','trash');
 addButton('parent',0,'add','add');
 addButton('undo','menu = document.querySelector("ctm_add")','sm');
