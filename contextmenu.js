@@ -1,4 +1,3 @@
-//test
 // General
 const allMenus = [];
 menuStart('pholder'); //Place holder, don't remove
