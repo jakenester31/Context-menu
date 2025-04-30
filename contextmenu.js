@@ -1,13 +1,16 @@
 // General
+const settings = {state:1};
 const allMenus = [];
-menuStart('pholder'); //Place holder, don't remove
+const placeHolder = menuStart(''); //Place holder, don't remove
+var defaultMenu;
 var hover = 0;
 const ms = [0,0];
-var defaultMenu;
-const settings = {state:1}; // no default menu = many unnecessary error messages
 const openChildren = [];
-var t = 0
+
+var t = 0; // for showing the state selector [DELETE ME]
+
 //Create menus
+// [DELETE Bellow] make your own!
 cmt('default menu');
 menuStart('all');
 addButton('Delete','console.log("test")','trash');
@@ -31,6 +34,7 @@ addButton('T1',0,'add');
 
 menuStart('?t == 2');
 addButton('T2',0,'close');
+// While I thinks its obvious... stop deleting here [DELETE til me!]
 
 //functions
 
@@ -56,6 +60,7 @@ function menuStart(...selector) {
     typeof menu == 'undefined' && (menu = element);
     selector.includes('all') && (defaultMenu = element); //set default menu
     document.querySelector('contextMenu').appendChild(element);
+    return(element);
 }
 
 function addButton(txt,onclick,icon,parent){
@@ -173,7 +178,7 @@ addEventListener('contextmenu', e => {
     }
 
     if (menu == undefined) {
-        menu = allMenus[0][0];
+        menu = placeHolder;
         menu.classList.add('open');
         return(0)
     }
@@ -219,21 +224,14 @@ addEventListener('click', e => {
 // click outside of menu
 addEventListener('mousedown', function(){
     if (hover == 0 && menu.matches('.open')) {
-        document.querySelector('html').style.pointerEvents='none';
         if (menu == undefined){
             return(0);
         }  
         menu.classList.remove('open');
-        menu.style.pointerEvents='all'; // Not trash, Im important too! buttons need me!!!!!
         hideChildren();
     }
 })
 
-addEventListener('mouseup', function(){
-    if (window.getComputedStyle(document.querySelector('html')).getPropertyValue("pointer-events") == 'none') {
-        document.querySelector('html').style.pointerEvents='';
-    }
-})
 
 addEventListener('wheel', function(){
     if (hover == 0){
@@ -250,6 +248,9 @@ addEventListener('wheel', function(){
 
 addEventListener('transitionend', e => {
     const obj = e.target;
+    if (Array.from(obj.classList).indexOf('menu') == -1){
+        return(0);
+    }
     const op = getComputedStyle(obj).opacity;
     if (op == 0){
         obj.style.left = '';
@@ -258,7 +259,7 @@ addEventListener('transitionend', e => {
 
 {
     const elements = document.getElementsByClassName('parent');
-    // Hover over sub menu parent
+    // Hover over? parent button
     for (var i = 0; i < elements.length; i++){
         elements[i].addEventListener('mouseenter', e => {
             hover = 1;
