@@ -1,4 +1,5 @@
 // General
+const container = document.documentElement.appendChild(document.createElement('contextMenu'));
 const settings = {state:1};
 const allMenus = [];
 const placeHolder = menuStart(''); //Place holder, don't remove
@@ -7,10 +8,10 @@ var hover = 0;
 const ms = [0,0];
 const openChildren = [];
 
-var t = 0; // for showing the state selector [DELETE ME]
 
 //Create menus
 // [DELETE Bellow] make your own!
+var t = 0;
 cmt('default menu');
 menuStart('all');
 addButton('Delete','console.log("test")','trash');
@@ -34,7 +35,7 @@ addButton('T1',0,'add');
 
 menuStart('?t == 2');
 addButton('T2',0,'close');
-// While I thinks its obvious... stop deleting here [DELETE til me!]
+// While I thinks its obvious... stop deleting here [DELETE til me! and me]
 
 //functions
 
@@ -59,7 +60,7 @@ function menuStart(...selector) {
     allMenus.push([element,sel]);
     typeof menu == 'undefined' && (menu = element);
     selector.includes('all') && (defaultMenu = element); //set default menu
-    document.querySelector('contextMenu').appendChild(element);
+    container.appendChild(element);
     return(element);
 }
 
@@ -71,7 +72,7 @@ function addButton(txt,onclick,icon,parent){
     const element = document.createElement('button');
     icon == 'sm' && (icon = txt);
     icon != undefined && (element.classList.add("ico"),element.style.setProperty('--icon', 'url(menu-ico/' + icon +'.png)'));
-    const menu = document.querySelector('contextMenu').lastChild.id;
+    const menu = container.lastChild.id;
     if (menu.slice(0,5) != "ctmc_") {
         parent != undefined && element.classList.add("parent","ctm_" + parent);
     }
@@ -209,8 +210,12 @@ addEventListener('click', e => {
     if (menu == undefined){
         return(0);
     }    
-    if (hover != 1 && menu.matches('.open')) {
+    if (hover == 0 && menu.matches('.open')) {
+        if (menu == undefined){
+            return(0);
+        }
         menu.classList.remove('open');
+        hideChildren();
     }
     if (findChild(e).obj != null){
         if (Array.from(findChild(e).obj.classList).indexOf('open') > -1){
@@ -220,18 +225,6 @@ addEventListener('click', e => {
         }
     }
 })
-
-// click outside of menu
-addEventListener('mousedown', function(){
-    if (hover == 0 && menu.matches('.open')) {
-        if (menu == undefined){
-            return(0);
-        }  
-        menu.classList.remove('open');
-        hideChildren();
-    }
-})
-
 
 addEventListener('wheel', function(){
     if (hover == 0){
