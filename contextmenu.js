@@ -139,32 +139,36 @@ function hideChildren(){
 
 //Listeners
 addEventListener('contextmenu', e => {
-    // Is menu on?
+    // is menu on?
     if (['on',1].indexOf(settings.state) == -1){
         return(0);
     }
     // old menu Guard
     if (menu != undefined){
-        menu.style.left = ''; //LEAVE!!!
-        menu.classList.remove('open'); //Your not that guy
+        menu.style.left = '';
+        menu.classList.remove('open');
     }
-    // New menu
-    var element;
-    // Info for new menu
-    element = document.elementFromPoint(e.clientX, e.clientY); //Element type
+    hideChildren();
+    // new menu info
+
+    menu = undefined;
+    // Default selector
+    typeof defaultMenu != 'undefined' && (menu = defaultMenu);
+    // element selector
+    var element = document.elementFromPoint(e.clientX, e.clientY); //Element type
     if (element == undefined){
         console.error('No element... Out of bounds?');
+        menu = placeHolder;
+        menu.classList.add('open');
         return(0);
     } else {
         element = element.nodeName;
     }
-    menu = undefined;
-    typeof defaultMenu != 'undefined' && (menu = defaultMenu);
     const index = allMenus.find(e => (e[1].find(
         e => e.toUpperCase() == element.toUpperCase()
     )))
     index != undefined && (menu = index[0]);
-
+    // state selector
     for (var i = 0; i < allMenus.length; i++){
         for (var a = 0; a < allMenus[i][1].length; a++){
             if (allMenus[i][1][a][0] == '?') {
@@ -177,20 +181,19 @@ addEventListener('contextmenu', e => {
             }
         }
     }
-
-    if (menu == undefined) {
+    // record mouse
+    ms.splice(0,1);
+    ms.push([e.clientX,e.clientY]);
+    // Cancel if no menu or mouse still
+    if (menu == undefined || ms[0].toString() == ms[1].toString()) {
         menu = placeHolder;
         menu.classList.add('open');
         return(0)
     }
-    // use google menu or custom menu?
-    ms.splice(0,1);
-    ms.push([e.clientX,e.clientY]);
-    if (ms[0].toString() != ms[1].toString()) {
-        e.preventDefault();
-        menu.classList.add('open'); //You are that guy
-    } 
-    
+
+    e.preventDefault();
+    menu.classList.add('open');
+
     // Calc menu position
 
     // set menu position
@@ -198,22 +201,18 @@ addEventListener('contextmenu', e => {
     for (var i = 0; i < 2; i++){
         // calc
         pos.push(mp[i] + mdm[i] > wdm[i] ? mp[i] - mdm[i] : mp[i]); // set menu position, standard context menu
-        pos[i] < 0 && (pos[i] = mp[i] + mdm[i] > wdm[i] ? mp[i] - mdm[i] / 2 : mp[i]); // custom: no space? no problem, just go mouse center
-        (pos[i] < 0 || pos[i] + mdm[i] > wdm[i]) && (pos[i] = wdm[i] / 2 - mdm[i] / 2); // custom: still no space? almost no problem, just go to screen center
+        pos[i] < 0 && (pos[i] = mp[i] + mdm[i] > wdm[i] ? mp[i] - mdm[i] / 2 : mp[i]); // custom: no space? mouse center
+        (pos[i] < 0 || pos[i] + mdm[i] > wdm[i]) && (pos[i] = wdm[i] / 2 - mdm[i] / 2); // custom: still no space? screen center
         // Result
         menu.style[['left','top'][i]] = pos[i] + "px";
     }
 })
 
-// click in menu
 addEventListener('click', e => {
     if (menu == undefined){
         return(0);
     }    
-    if (hover == 0 && menu.matches('.open')) {
-        if (menu == undefined){
-            return(0);
-        }
+    if (hover != 2 && menu.matches('.open')) {
         menu.classList.remove('open');
         hideChildren();
     }
@@ -221,19 +220,18 @@ addEventListener('click', e => {
         if (Array.from(findChild(e).obj.classList).indexOf('open') > -1){
             hideChildren();
         } else {
-            childOpen(e)
+            childOpen(e);
         }
     }
 })
 
-addEventListener('wheel', function(){
+addEventListener('scroll', e => {
     if (hover == 0){
         if (menu == undefined){
             return(0);
         }  
         menu.classList.remove('open');
         // Hover Guard
-        hover != 0 && console.log('leave');
         hover = 0;
         hideChildren();
     }
@@ -255,14 +253,31 @@ addEventListener('transitionend', e => {
     // Hover over? parent button
     for (var i = 0; i < elements.length; i++){
         elements[i].addEventListener('mouseenter', e => {
-            hover = 1;
+            hover = 2;
             if (e.target.parentNode.matches('.open')){
                 hideChildren();
                 childOpen(e);
             }
         })
-        elements[i].addEventListener('mouseleave', function() {
-            hover = 0;
+        elements[i].addEventListener('mouseleave', function(){
+            hover = 1;
         })
     }
+    for (var i = 0; i < allMenus.length; i++){
+        allMenus[i][0].addEventListener('mouseenter', function(){
+            hover = 1;
+        });
+        allMenus[i][0].addEventListener('mouseleave', function(){
+            hover = 0;
+        });
+    }
 }
+
+
+//? test
+
+// setInterval(foo, 500)
+
+// function foo () {
+//     document.querySelector('#box').innerHTML= [hover,menu != 0];
+// }
