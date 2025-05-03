@@ -5,13 +5,13 @@
 
 // General
 const container = document.documentElement.appendChild(document.createElement('contextMenu'));
-const settings = {state:1};
+const settings = {state:1,autoCloseChild:1};
 const allMenus = [];
 const placeHolder = menuStart(''); //Place holder, don't remove
 var defaultMenu;
 var hover = 0;
 const ms = [0,0];
-const openChildren = [];
+var openChild;
 
 
 //Create menus
@@ -21,7 +21,7 @@ cmt('default menu');
 menuStart('all');
 addButton('Delete','console.log("test")','trash');
 addButton('parent',0,'add','add');
-addButton('undo','menu = document.querySelector("ctm_add")','sm');
+addButton('undo',0,'sm');
 addButton('download',0,'sm');
 addButton('save',0,'add');
 
@@ -93,16 +93,16 @@ function cmt (txt) {
 // Child menu functions
 function childOpen(e) {
     const child = findChild(e);
-    openChildren.indexOf(child.id) == -1 && openChildren.push(child.id);
-    child.obj.classList.add('open');
+    openChild = child;
+    openChild.classList.add('open');
     // info
     const button = e.target.getBoundingClientRect(); //parent button
-    const target = child.obj.getBoundingClientRect(); //child menu
+    const target = openChild.getBoundingClientRect(); //child menu
     // position
     const pos = {x:0,y:0};
     // x axis
     pos.x = button.right;
-    if (pos.x + child.obj.clientWidth > document.documentElement.clientWidth){
+    if (pos.x + openChild.clientWidth > document.documentElement.clientWidth){
         pos.x = button.left - target.width;
         if (button.left < document.documentElement.clientWidth - button.right) {
             pos.x = button.right;
@@ -119,8 +119,8 @@ function childOpen(e) {
         pos.y = document.documentElement.clientHeight - target.height;
     }
     // set pos
-    child.obj.style.left = pos.x + 'px'
-    child.obj.style.top = pos.y + 'px'
+    openChild.style.left = pos.x + 'px'
+    openChild.style.top = pos.y + 'px'
 }
 
 function findChild (e){
@@ -132,13 +132,12 @@ function findChild (e){
             i = e.target.classList.length;
         }
     }
-    return({obj:document.querySelector(id),id:id});
+    return(document.querySelector(id));
 }
 
-function hideChildren(){
-    for (var i = 0; i < openChildren.length; i++){
-        const obj = document.querySelector(openChildren[i]);
-        obj.classList.remove('open');
+function hideChild(){
+    if (openChild != undefined){
+        openChild.classList.remove('open');
     }
 }
 
@@ -153,7 +152,7 @@ addEventListener('contextmenu', e => {
         menu.style.left = '';
         menu.classList.remove('open');
     }
-    hideChildren();
+    hideChild();
     // new menu info
 
     menu = undefined;
@@ -172,7 +171,7 @@ addEventListener('contextmenu', e => {
     const index = allMenus.find(e => (e[1].find(
         e => e.toUpperCase() == element.toUpperCase()
     )))
-    index != undefined && (menu = index[0]);
+    typeof index != 'undefined' && (menu = index[0]);
     // state selector
     for (var i = 0; i < allMenus.length; i++){
         for (var a = 0; a < allMenus[i][1].length; a++){
@@ -215,16 +214,16 @@ addEventListener('contextmenu', e => {
 
 addEventListener('click', e => {
     if (menu == undefined){
+        console.log('click, no menu')
         return(0);
     }    
-    if (hover != 2 && menu.matches('.open')) {
+    if (hover != 2) {
         menu.classList.remove('open');
-        hideChildren();
-    } else {
+        hideChild();
     }
-    if (findChild(e).obj != null){
-        if (Array.from(findChild(e).obj.classList).indexOf('open') > -1){
-            hideChildren();
+    if (findChild(e) != null && menu.matches('.open')){
+        if (Array.from(findChild(e).classList).indexOf('open') > -1){
+            hideChild();
         } else {
             childOpen(e);
         }
@@ -243,7 +242,7 @@ addEventListener('click', e => {
             menu.classList.remove('open');
             // Hover Guard
             hover = 0;
-            hideChildren();
+            hideChild();
         } else {
             e.preventDefault();
             e.stopPropagation();
@@ -279,7 +278,7 @@ addEventListener('click', e => {
                 scrollTo(...pgOff[0]);
             } else {
                 menu.classList.remove('open');
-                hideChildren();
+                hideChild();
             }
         } else {
             pgOff.splice(0,1);
@@ -300,27 +299,38 @@ addEventListener('transitionend', e => {
 })
 
 {
-    const elements = document.getElementsByClassName('parent');
+    // Hover over menu?
+    function setHover(n){
+        hover = n;
+    }
+    for (var i = 0; i < allMenus.length; i++){
+        allMenus[i][0].addEventListener('mouseenter', e => setHover(1),false);
+        allMenus[i][0].addEventListener('mouseleave', e => setHover(0),false);
+        if (allMenus[i][0].id.includes('ctmc_')){
+            allMenus[i][0].addEventListener('mouseenter', e => {
+                setHover(3);
+            });
+            allMenus[i][0].addEventListener('mouseleave', e => {
+                hide();
+            });
+        }
+    }
     // Hover over parent button?
+    const elements = document.getElementsByClassName('parent');
     for (var i = 0; i < elements.length; i++){
         elements[i].addEventListener('mouseenter', e => {
             hover = 2;
             if (e.target.parentNode.matches('.open')){
-                hideChildren();
+                hideChild();
                 childOpen(e);
             }
         })
-        elements[i].addEventListener('mouseleave', function(){
+        elements[i].addEventListener('mouseleave', e=> setTimeout(hide,1));
+        function hide(){
+            if (settings.autoCloseChild == 1 && hover != 3){
+                hideChild();
+            }
             hover = 1;
-        })
-    }
-    // Hover over menu?
-    for (var i = 0; i < allMenus.length; i++){
-        allMenus[i][0].addEventListener('mouseenter', function(){
-            hover = 1;
-        });
-        allMenus[i][0].addEventListener('mouseleave', function(){
-            hover = 0;
-        });
+        }
     }
 }

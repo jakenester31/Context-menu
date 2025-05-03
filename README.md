@@ -2,3 +2,8 @@ The Only files you need for your own website are:
 - contextmenu.js
 - contextmenu.css
 - menu-ico folder
+
+Settings:
+
+State - decides if the webpage should use the custom or web browsers context menu
+autoCloseChild - decides if the child menus should close on mouse leaving them or their parent
