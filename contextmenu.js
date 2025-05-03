@@ -220,6 +220,7 @@ addEventListener('click', e => {
     if (hover != 2 && menu.matches('.open')) {
         menu.classList.remove('open');
         hideChildren();
+    } else {
     }
     if (findChild(e).obj != null){
         if (Array.from(findChild(e).obj.classList).indexOf('open') > -1){
@@ -230,17 +231,62 @@ addEventListener('click', e => {
     }
 })
 
-addEventListener('scroll', e => {
-    if (hover == 0){
-        if (menu == undefined){
-            return(0);
-        }  
-        menu.classList.remove('open');
-        // Hover Guard
-        hover = 0;
-        hideChildren();
-    }
-})
+
+// Prevent Page from scrolling when mouse is over menu
+{
+    // Ignore wheel
+    addEventListener('wheel', e => {
+        if (hover == 0){
+            if (menu == undefined){
+                return(0);
+            }  
+            menu.classList.remove('open');
+            // Hover Guard
+            hover = 0;
+            hideChildren();
+        } else {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+    }, {passive: false})
+
+    // Ignore Key
+    const lock = [];
+    const ignore = [' ','ArrowDown','ArrowUp','ArrowLeft','ArrowRight','PageDown','PageUp','End'];
+    addEventListener('keydown', e=> {
+        key = e.key;
+        if (lock.indexOf(e.key) == -1){
+            lock.push(e.key);
+            if (ignore.indexOf(e.key) > -1 && hover > 0) {
+                e.preventDefault();
+            }
+        }
+    })
+    addEventListener('keyup', e=>{
+        lock.splice(lock.indexOf(e.key),1);
+    })
+    
+    // Final layer, has slight delay
+    // But it works for everything
+    const pgOff = [];
+    pgOff.push([window.scrollX,window.scrollY]);
+    pgOff.push([window.scrollX,window.scrollY]);
+
+    addEventListener('scroll', e=>{
+        if (Array.from(menu.classList).indexOf('open') > -1){
+            if (hover > 0) {
+                scroll(...pgOff[0]);
+                scrollTo(...pgOff[0]);
+            } else {
+                menu.classList.remove('open');
+                hideChildren();
+            }
+        } else {
+            pgOff.splice(0,1);
+            pgOff.push([window.scrollX,window.scrollY]);
+        }
+    })
+}
 
 addEventListener('transitionend', e => {
     const obj = e.target;
@@ -255,7 +301,7 @@ addEventListener('transitionend', e => {
 
 {
     const elements = document.getElementsByClassName('parent');
-    // Hover over? parent button
+    // Hover over parent button?
     for (var i = 0; i < elements.length; i++){
         elements[i].addEventListener('mouseenter', e => {
             hover = 2;
@@ -268,6 +314,7 @@ addEventListener('transitionend', e => {
             hover = 1;
         })
     }
+    // Hover over menu?
     for (var i = 0; i < allMenus.length; i++){
         allMenus[i][0].addEventListener('mouseenter', function(){
             hover = 1;
@@ -277,12 +324,3 @@ addEventListener('transitionend', e => {
         });
     }
 }
-
-
-//? test
-
-// setInterval(foo, 500)
-
-// function foo () {
-//     document.querySelector('#box').innerHTML= [hover,menu != 0];
-// }
