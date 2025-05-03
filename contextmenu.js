@@ -1,3 +1,8 @@
+/* incase you forgot:
+ <script type="text/javascript" src="contextmenu.js"></script> 
+ to link the file to your webpage
+*/
+
 // General
 const container = document.documentElement.appendChild(document.createElement('contextMenu'));
 const settings = {state:1};
