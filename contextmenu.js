@@ -1,46 +1,31 @@
-/* incase you forgot:
- <script type="text/javascript" src="contextmenu.js"></script> 
- to link the file to your webpage
-*/
-
 // General
 const container = document.documentElement.appendChild(document.createElement('contextMenu'));
 const settings = {state:1,autoCloseChild:1,childClickSwitch:0};
 const allMenus = [];
-const placeHolder = menuStart(''); //Place holder, don't remove
+const placeHolder = menuStart(''); //Place holder, don't remove... Its protection for the browser menu
 var defaultMenu;
 var hover = 0;
 const ms = [0,0];
 var openChild;
 
+//* Create menus here
+menuStart('all'); //This is the default menu, its chosen if no other menu was selected
 
-//Create menus
-// [DELETE Bellow] make your own!
-var t = 0;
-cmt('default menu');
-menuStart('all');
-addButton('Delete','console.log("test")','trash');
-addButton('parent',0,'add','add');
-addButton('undo',0,'sm');
-addButton('download',0,'sm');
-addButton('save',0,'add');
+addButton('example','console.log("TEST")','add') //Buttons are added to the last menu specified
+//The inner text is first, in this case its 'test'
+//Next is the function - its run when the button is clicked
+//Afterward is the Icon - its displayed to the left of the text
+//Finally is the parent tag - This tag is used to link buttons to child menus, also, preferably parent buttons should not have a function
 
-cmt('test menu');
-menuStart("img");
-addButton('M2',0,'add','add')
-addButton('M2',0,'trash');
-addButton('download',0,'sm');
-addButton('save',0,'add');
+addButton('example2',0,'close','example2') //This is a parent button with the tag 'example2', in the code its shown as 'ctm_example2'
 
-menuStart('#add');
-addButton('save',0,'add');
+menuStart('#example2') //The # means that the selector is a child selector, shown as 'ctmc_example2' in the code
+addButton('example3','console.log("So many examples")',0,'example3')
 
-menuStart('?t == 1','?t == 3');
-addButton('T1',0,'add');
+menuStart('p','img','?openChild != undefined','#example3') //Menus can have as many selectors as you want, and they can be of any type! just don't have multiple default menus
 
-menuStart('?t == 2');
-addButton('T2',0,'close');
-// While I thinks its obvious... stop deleting here [DELETE til me! and me]
+// Ok thats enough for the tutorial, if you want to know more about the selectors, go to the README
+
 
 //functions
 
