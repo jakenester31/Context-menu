@@ -1,4 +1,4 @@
-Use releases instead of the main branch. The main branch is designed to showcase the code, not for use in websites
+<p>Use releases instead of the main branch. The main branch is designed to showcase the code, not for use in websites</p>
 <br>
 Settings:
 
