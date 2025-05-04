@@ -1,4 +1,4 @@
-Use releases instead of the main branch. The main branch is designed to showcase the code not for use in websites
+Use releases instead of the main branch. The main branch is designed to showcase the code, not for use in websites
 
 Settings:
 State - decides if the webpage should use the custom or web browsers context menu
