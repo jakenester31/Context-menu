@@ -15,15 +15,12 @@ Selector guide:<br>
 There are 3 selectors and 1 pseudo selector. They go in order of priority from the top (having least priority) 
 <br><br>
 
-standard selectors<br>
+standard selectors:<br>
 
-Default selector, tag:(all), the selector chosen if no other selector is chosen, there should only be one
-
-Element selector, standard selector for right clicking on an element, ex. img, div, p, etc...
-
+Default selector, tag:(all), the selector chosen if no other selector is chosen, there should only be one<br>
+Element selector, standard selector for right clicking on an element, ex. img, div, p, etc...<br>
 State selector, startTag:(?), evaluates a condition and if true, choses the selector, ex. ?t == 1, ?t != 3
+<br><br>
 
-
-pseudo selectors:
-
+pseudo selectors:<br>
 Child selector, startTag:(#), links a menu to parent buttons, ex. #add, #test123
