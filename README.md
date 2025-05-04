@@ -16,5 +16,5 @@ Default selector, tag:(all), the selector chosen if no other selector is chosen,
 Element selector, standard selector for right clicking on an element, ex. img, div, p, etc...
 State selector, startTag:(?), evaluates a condition and if true, choses the selector, ex. ?t == 1, ?t != 3
 
-pseudo selectors
+pseudo selectors:
 Child selector, startTag:(#), links a menu to parent buttons, ex. #add, #test123
