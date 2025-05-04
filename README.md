@@ -2,9 +2,10 @@ Use releases instead of the main branch. The main branch is designed to showcase
 
 
 Settings:
-        State - decides if the webpage should use the custom or web browsers context menu
-        autoCloseChild - decides if the child menus should close on mouse leaving them or their parent
-        childClickSwitch - decides if child menus should close or open if a parent button is clicked
+
+State - decides if the webpage should use the custom or web browsers context menu
+autoCloseChild - decides if the child menus should close on mouse leaving them or their parent
+childClickSwitch - decides if child menus should close or open if a parent button is clicked
 
 
 Icons:
