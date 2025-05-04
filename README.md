@@ -9,7 +9,7 @@ Settings:
 </ul><br>
 
 Icons:<br>
-I got my icons from https://fonts.google.com/icons?icon.size=24&icon.color=%23e3e3e3/"target="_blank". Great website, check it out!
+I got my icons from https://fonts.google.com/icons?icon.size=24&icon.color=%23e3e3e3. Great website, check it out!
 <br><br>
 
 Selector guide:<br>
