@@ -7,13 +7,15 @@ autoCloseChild - decides if the child menus should close on mouse leaving them o
 childClickSwitch - decides if child menus should close or open if a parent button is clicked
 <br><br>
 
-Icons:
+Icons:<br>
 I got my icons from https://fonts.google.com/icons?icon.size=24&icon.color=%23e3e3e3. Great website, check it out!
+<br><br>
 
-Selector guide:
-There are 3 selectors and 1 pseudo selector. They go in order of priority from the top (having least priority)
+Selector guide:<br>
+There are 3 selectors and 1 pseudo selector. They go in order of priority from the top (having least priority) 
+<br><br>
 
-standard selectors
+standard selectors<br>
 
 Default selector, tag:(all), the selector chosen if no other selector is chosen, there should only be one
 
