@@ -5,7 +5,7 @@
 
 // General
 const container = document.documentElement.appendChild(document.createElement('contextMenu'));
-const settings = {state:1,autoCloseChild:1};
+const settings = {state:1,autoCloseChild:1,childClickSwitch:0};
 const allMenus = [];
 const placeHolder = menuStart(''); //Place holder, don't remove
 var defaultMenu;
@@ -144,7 +144,7 @@ function hideChild(){
 //Listeners
 addEventListener('contextmenu', e => {
     // is menu on?
-    if (['on',1].indexOf(settings.state) == -1){
+    if (settings.state != 1){
         return(0);
     }
     // old menu Guard
@@ -217,9 +217,12 @@ addEventListener('click', e => {
         console.log('click, no menu')
         return(0);
     }    
-    if (hover != 2) {
+    if (hover != 2 && e.target != menu) {
         menu.classList.remove('open');
         hideChild();
+    }
+    if(settings.childClickSwitch != 1){
+        return(0);
     }
     if (findChild(e) != null && menu.matches('.open')){
         if (Array.from(findChild(e).classList).indexOf('open') > -1){

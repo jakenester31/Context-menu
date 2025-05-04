@@ -15,7 +15,7 @@ contextMenu {
 contextMenu .menu {
     position:fixed;
     flex-direction: column;
-    background:rgb(48, 48, 48);
+    background:rgb(36, 36, 36);
     border-radius: 10px 10px 10px 10px;
     padding: 10px 0px;
     user-select: none;
@@ -50,7 +50,11 @@ contextMenu .menu button * { /* Inside button */
 }
 
 contextMenu .menu button:hover {  /* Hover */
-    background:rgb(80, 80, 80);
+    background:rgb(60, 60, 60);
+}
+
+contextMenu .menu button:active {  /* click */
+    background:rgb(74, 74, 74);
 }
 
 /* Icons */
