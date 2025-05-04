@@ -1,7 +1,4 @@
-The Only files you need for your own website are:
-- contextmenu.js
-- contextmenu.css
-- menu-ico folder
+Please download a release instead of from the main branch!
 
 Settings:
 State - decides if the webpage should use the custom or web browsers context menu
