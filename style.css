@@ -1,0 +1,41 @@
+/* extra */
+
+#animage {
+    width:100px;
+    height: 100px;
+    box-sizing: border-box;
+    border-radius: 20px;
+    border-style: solid;
+    border-width: 25px;
+    border-color: skyblue;
+    background-color: lightblue;
+}
+
+#adiv {
+    width:100px;
+    height:100px;
+    background-color: pink;
+    box-sizing: border-box;
+    border-style: solid;
+    border-width:25px;
+    border-color: hotpink;
+    border-radius: 20px;
+}
+
+/* required */
+contextmenu- {
+    position: absolute;
+    top:0px;
+    left:-100%;
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    background-color: rgb(43, 43, 43);
+    border-radius: 5px;
+}
+
+contextmenu- button {
+    border: none;
+    background-color: transparent;
+    color: white;
+}
